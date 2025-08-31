@@ -14,4 +14,30 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// Definir schemas das tabelas de usuário e de produtos.
+// ENUMS delimitam valores possíveis para categoria e sexo.
+enum Category {
+  Acessórios
+  Calçados
+  Calças
+  Camisas
+  Intimo
+}
+
+enum Gender {
+  feminino
+  masculino
+  Unissex
+}
+
+// Tabela para produtos
+model product {
+  id              BigInt          @id @default(autoincrement())
+  name            String 
+  price           Float
+  description     String?
+  stock           Int
+  category        Category
+  gender          Gender
+  imageUrl        String
+  imagePath       String 
+}
