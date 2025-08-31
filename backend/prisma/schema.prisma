@@ -30,8 +30,8 @@ enum Gender {
 }
 
 // Tabela para produtos
-model product {
-  id              BigInt          @id @default(autoincrement())
+model products {
+  id              BigInt   @id @default(autoincrement())
   name            String 
   price           Float
   description     String?
@@ -40,4 +40,13 @@ model product {
   gender          Gender
   imageUrl        String
   imagePath       String 
+}
+
+// Tabela para usuarios
+model users {
+  id              Int      @id @default(autoincrement())   
+  name            String
+  email           String   @unique
+  phone           String
+  password        String
 }
