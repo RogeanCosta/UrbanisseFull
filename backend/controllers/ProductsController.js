@@ -44,7 +44,7 @@ exports.getProductsCalca = async (req, res) => {
    }
 };
 
-exports.getProductsAcessorios = async (req, res) => {
+exports.getProductsAcessorio = async (req, res) => {
   try {
     const product = await prisma.products.findMany({
       where:{
