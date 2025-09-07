@@ -1,8 +1,64 @@
 // Configuração Básica
-const { PrismaClient } = require('../generated/prisma');
+const { PrismaClient, Category, Gender } = require('../generated/prisma');
 const prisma = new PrismaClient();
 
 // Gerenciamento de rotas
+exports.getProducts = async (req, res) => {
+  try {
+    const product = await prisma.products.findMany();
+ 
+    res.status(200).json(product);
+
+   } catch (error) {
+    res.status(500).json({ error: 'Erro ao buscar produtos' });
+   }
+};
+
+exports.getProductsCamisa = async (req, res) => {
+  try {
+    const product = await prisma.products.findMany({
+      where:{
+        category: 'Camisas'
+      }
+    });
+ 
+    res.status(200).json(product);
+
+   } catch (error) {
+    res.status(500).json({ error: 'Erro ao buscar produtos' });
+   }
+};
+
+exports.getProductsCalca = async (req, res) => {
+  try {
+    const product = await prisma.products.findMany({
+      where:{
+        category: 'Calças'
+      }
+    });
+ 
+    res.status(200).json(product);
+
+   } catch (error) {
+    res.status(500).json({ error: 'Erro ao buscar produtos' });
+   }
+};
+
+exports.getProductsAcessorio = async (req, res) => {
+  try {
+    const product = await prisma.products.findMany({
+      where:{
+        category: 'Acessórios'
+      }
+    });
+ 
+    res.status(200).json(product);
+
+   } catch (error) {
+    res.status(500).json({ error: 'Erro ao buscar produtos' });
+   }
+};
+
 exports.deleteProduct = async (req, res) => {
   const { id } = req.params;
 
@@ -18,6 +74,7 @@ exports.deleteProduct = async (req, res) => {
   }
 };
 
+// Nova rota para criar um produto
 exports.createProduct = async (req, res) => {
   try {
     const { name, price, description, stock, category, gender, imageUrl, imagePath } = req.body;
@@ -30,15 +87,17 @@ exports.createProduct = async (req, res) => {
         category,
         gender,
         imageUrl,
-        imagePath,
-      },
+        imagePath
+      }
     });
     res.status(201).json(newProduct);
   } catch (error) {
-    res.status(500).json({ error: 'Erro ao criar produto' });
+    console.error(error);
+    res.status(500).json({ error: 'Erro ao criar o produto!' });
   }
 };
 
+// Nova rota para atualizar um produto
 exports.updateProduct = async (req, res) => {
   const { id } = req.params;
   try {
@@ -55,11 +114,12 @@ exports.updateProduct = async (req, res) => {
         category,
         gender,
         imageUrl,
-        imagePath,
-      },
+        imagePath
+      }
     });
     res.status(200).json(updatedProduct);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: 'Erro ao atualizar o produto!' });
   }
 };
