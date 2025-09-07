@@ -7,6 +7,11 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+// Adiciona o protótipo para serializar BigInt em JSON
+BigInt.prototype.toJSON = function () {
+  return this.toString();
+};
+
 // Utilização de rotas
 const productsRoutes = require('./routes/ProductsRoutes');
 const usersRoutes = require('./routes/UsersRoutes');
