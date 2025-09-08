@@ -5,9 +5,9 @@ const productsController = require('../controllers/ProductsController');
 
 // Definição de rotas
 router.get('/produtos', productsController.getProducts);
-router.get('/produtos/camisas', productsController.getProdutctsCamisa);
-router.get('/produtos/calcas', productsController.getProdutctsCalca);
-router.get('/produtos/acessorios', productsController.getProdutctsAcessorio);
+router.get('/produtos/camisas', productsController.getProductsCamisa);
+router.get('/produtos/calcas', productsController.getProductsCalca);
+router.get('/produtos/acessorios', productsController.getProductsAcessorio);
 router.delete('/produtos/:id', productsController.deleteProduct); // nome da função pode ser alterada depois.
 // TODO: DEFINIR RESTANTE DAS ROTAS...
 

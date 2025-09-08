@@ -10,7 +10,7 @@ exports.getProducts = async (req, res) => {
     res.status(200).json(product);
 
    } catch (error) {
-    res.status(500).json({ error: 'Erro ao buscar produtos' });
+    res.status(404).json({ error: 'Erro ao buscar produtos' });
    }
 };
 
@@ -25,7 +25,7 @@ exports.getProductsCamisa = async (req, res) => {
     res.status(200).json(product);
 
    } catch (error) {
-    res.status(500).json({ error: 'Erro ao buscar produtos' });
+    res.status(404).json({ error: 'Erro ao buscar produtos' });
    }
 };
 
@@ -40,7 +40,7 @@ exports.getProductsCalca = async (req, res) => {
     res.status(200).json(product);
 
    } catch (error) {
-    res.status(500).json({ error: 'Erro ao buscar produtos' });
+    res.status(404).json({ error: 'Erro ao buscar produtos' });
    }
 };
 
@@ -55,7 +55,7 @@ exports.getProductsAcessorio = async (req, res) => {
     res.status(200).json(product);
 
    } catch (error) {
-    res.status(500).json({ error: 'Erro ao buscar produtos' });
+    res.status(404).json({ error: 'Erro ao buscar produtos' });
    }
 };
 
