@@ -1,9 +1,5 @@
 // Configuração Básica
-<<<<<<< HEAD
-const { PrismaClient, Category } = require('../generated/prisma');
-=======
 const { PrismaClient, Category, Gender } = require('../generated/prisma');
->>>>>>> valnicio
 const prisma = new PrismaClient();
 
 // Gerenciamento de rotas

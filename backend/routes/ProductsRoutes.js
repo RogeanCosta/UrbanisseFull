@@ -4,20 +4,16 @@ const router = express.Router();
 const productsController = require('../controllers/ProductsController');
 
 // Definição de rotas
-<<<<<<< HEAD
 router.get('/produtos', productsController.getProducts);
 router.get('/produtos/camisas', productsController.getProductsCamisa);
 router.get('/produtos/calcas', productsController.getProductsCalca);
 router.get('/produtos/acessorios', productsController.getProductsAcessorio);
 router.delete('/produtos/:id', productsController.deleteProduct); // nome da função pode ser alterada depois.
-// TODO: DEFINIR RESTANTE DAS ROTAS...
-=======
-router.delete('/produtos/:id', productsController.deleteProduct);
 
 // Novas rotas
 router.post("/produtos", productsController.createProduct);
 router.put("/produtos/:id", productsController.updateProduct);
->>>>>>> valnicio
+// TODO: DEFINIR RESTANTE DAS ROTAS...
 
 // exportação das rotas definidas
 module.exports = router;
