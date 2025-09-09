@@ -1,5 +1,5 @@
 // Configuração Básica
-const { PrismaClient, Category } = require('../generated/prisma');
+const { PrismaClient, Category, Gender } = require('../generated/prisma');
 const prisma = new PrismaClient();
 
 // Gerenciamento de rotas
@@ -71,5 +71,55 @@ exports.deleteProduct = async (req, res) => {
     res.status(200).send('Produto deletado com sucesso!');
   } catch (error) {
     res.status(500).json({ error: 'Erro ao deletar produto' });
+  }
+};
+
+// Nova rota para criar um produto
+exports.createProduct = async (req, res) => {
+  try {
+    const { name, price, description, stock, category, gender, imageUrl, imagePath } = req.body;
+    const newProduct = await prisma.products.create({
+      data: {
+        name,
+        price,
+        description,
+        stock,
+        category,
+        gender,
+        imageUrl,
+        imagePath
+      }
+    });
+    res.status(201).json(newProduct);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Erro ao criar o produto!' });
+  }
+};
+
+// Nova rota para atualizar um produto
+exports.updateProduct = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const { name, price, description, stock, category, gender, imageUrl, imagePath } = req.body;
+    const updatedProduct = await prisma.products.update({
+      where: {
+        id: parseInt(id),
+      },
+      data: {
+        name,
+        price,
+        description,
+        stock,
+        category,
+        gender,
+        imageUrl,
+        imagePath
+      }
+    });
+    res.status(200).json(updatedProduct);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Erro ao atualizar o produto!' });
   }
 };
