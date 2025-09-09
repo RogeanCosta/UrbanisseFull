@@ -14,11 +14,18 @@ exports.deleteUser = async (req, res) => {
     });
 
     res.status(200).send('Usuário deletado com sucesso!');
+<<<<<<< HEAD
     }
   catch (error) {
     res.status(500).json({ error: 'Erro ao deletar o usuário!' });
   }
 }
+=======
+  } catch (error) {
+    res.status(500).json({ error: 'Erro ao deletar o usuário!' });
+  }
+};
+>>>>>>> valnicio
 
 exports.updateUser = async (req, res) => {
   const { id } = req.params;
@@ -37,6 +44,7 @@ exports.updateUser = async (req, res) => {
         password
       }
     });
+<<<<<<< HEAD
     
     res.status(200).send('Usuário atualizado com sucesso!');
     }
@@ -44,3 +52,37 @@ exports.updateUser = async (req, res) => {
     res.status(500).json({ error: 'Erro ao deletar o usuário!' });
   }
 }
+=======
+
+    res.status(200).send('Usuário atualizado com sucesso!');
+  } catch (error) {
+    res.status(500).json({ error: 'Erro ao deletar o usuário!' });
+  }
+};
+
+exports.listUsers = async (req, res) => {
+  try {
+    const users = await prisma.users.findMany();
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ error: 'Erro ao buscar os usuários' });
+  }
+};
+
+exports.createUser = async (req, res) => {
+  try {
+    const { name, email, phone, password } = req.body;
+    const newUser = await prisma.users.create({
+      data: {
+        name,
+        email,
+        phone,
+        password,
+      },
+    });
+    res.status(201).json(newUser);
+  } catch (error) {
+    res.status(500).json({ error: 'Erro ao criar o usuário!' });
+  }
+};
+>>>>>>> valnicio
