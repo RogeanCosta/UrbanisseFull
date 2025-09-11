@@ -1,20 +1,26 @@
 // Configuração Básica
-const express = require('express');
-const cors = require('cors');
+const express = require("express");
+const cors = require("cors");
 const PORT = 3000;
 
 const app = express();
 app.use(express.json());
 app.use(cors());
 
+// Adiciona o protótipo para serializar BigInt em JSON
+BigInt.prototype.toJSON = function () {
+  return this.toString();
+};
+
 // Utilização de rotas
-const productsRoutes = require('./routes/ProductsRoutes');
-const usersRoutes = require('./routes/UsersRoutes');
+const productsRoutes = require("./routes/ProductsRoutes");
+const usersRoutes = require("./routes/UsersRoutes");
 
 app.use(productsRoutes);
 app.use(usersRoutes);
 
 // Inicialização do Servidor
 app.listen(PORT, () => {
-  console.log('Servidor executando na porta ' + PORT);
-  });
+  console.log("Servidor executando na porta " + PORT);
+}); //
+//
