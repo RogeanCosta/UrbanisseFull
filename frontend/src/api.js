@@ -28,8 +28,8 @@ export const getAcessorios = async () => {
   return response.data;
 };
 
-export const postProduto = async (produto) => {
-  const response = await axios.post(`${API_URL}/produtos`, produto);
+export const postProduto = async (formData) => {
+  const response = await axios.post(`${API_URL}/produtos`, formData, {headers: { "Content-Type": "multipart/form-data",}});
   return response.data;
 };
 

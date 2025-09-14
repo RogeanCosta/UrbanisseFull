@@ -5,6 +5,8 @@ import ProductList from "./ProductList";
 import ProductEditor from "./ProductEdit.jsx";
 import Header from "./Header.jsx";
 import "./App.css";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
@@ -17,6 +19,10 @@ function App() {
         <Route path="novoproduto" element={<ProductForm />} />
         <Route path="editarproduto/:id" element={<ProductEditor />} />
       </Routes>
+      <ToastContainer 
+      position="top-right" 
+      autoClose={3000}
+      theme="dark" />
     </BrowserRouter>
   );
 }

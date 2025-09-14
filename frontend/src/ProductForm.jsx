@@ -2,6 +2,8 @@ import { useRef, useState } from "react";
 import { supabase } from "./supabase";
 import { useNavigate } from "react-router-dom";
 import "./ProductForm.css";
+import { toast } from "react-toastify";
+import { postProduto } from "./api";
 
 export default function ProductForm() {
   const [name, setName] = useState("");
@@ -14,7 +16,6 @@ export default function ProductForm() {
   const [isLoading, setIsLoading] = useState(false);
 
   const imageInputRef = useRef();
-  const navigate = useNavigate();
 
   function capitalizeFirst(str) {
     if (!str) return "";
@@ -55,91 +56,42 @@ export default function ProductForm() {
       return;
     }
 
-    // Upload da imagem
-    const imageName = `${Date.now()}_${image.name}`;
-    const imagePath = `${imageName}`;
-
-    const { error: storageError } = await supabase.storage
-      .from("images")
-      .upload(imagePath, image);
-
-    if (storageError) {
-      alert("Erro ao enviar imagem");
-      console.error(storageError);
-      setIsLoading(false);
-      return;
-    }
-
-    const { data: urlData } = supabase.storage
-      .from("images")
-      .getPublicUrl(imagePath);
-
-    const imageUrl = urlData.publicUrl;
-
     // Novo produto
     const newProduct = {
-      id: Date.now(),
       name: name.trim(),
       price: parseFloat(price),
       description: description.trim(),
       stock: parseInt(stock),
       category: capitalizeFirst(category.trim()),
-      gender: capitalizeFirst(gender.trim()),
-      imageUrl,
-      imagePath,
+      gender: gender.trim(),
     };
 
-    // Pega o JSON atualizado da internet com cache busting
-    let productList = [];
-
     try {
-      const { data: publicUrlData } = supabase.storage
-        .from("products-json")
-        .getPublicUrl("produtos.json");
+      const formData = new FormData();
+      Object.entries(newProduct).forEach(([key, value]) => {
+        formData.append(key, value)
+      });
+      formData.append("file", image);
 
-      const response = await fetch(
-        `${publicUrlData.publicUrl}?t=${Date.now()}`
-      );
-      const text = await response.text();
-      const parsed = JSON.parse(text);
-      productList = Array.isArray(parsed) ? parsed : [parsed];
-    } catch (e) {
-      console.error("Erro ao obter JSON atualizado:", e);
+      await postProduto(formData);
+
+      toast.success("Produto cadastrado com sucesso! 🎉");
+      console.log(Response.data);
+    } catch (error) {
+      console.error(error);
+      toast.error("Erro ao cadastrar produto 😢");
     }
 
-    // Adiciona o novo produto e ordena
-    productList.push(newProduct);
-    productList.sort((a, b) => b.id - a.id);
-
-    // Cria o novo blob
-    const updatedJson = new Blob([JSON.stringify(productList)], {
-      type: "application/json",
-    });
-
-    const { error: uploadError } = await supabase.storage
-      .from("products-json")
-      .upload("produtos.json", updatedJson, { upsert: true });
-
-    if (uploadError) {
-      alert("Erro ao salvar JSON");
-      console.error(uploadError);
-    } else {
-      alert("Produto cadastrado com sucesso!");
-
-      // Limpa o formulário
-      setName("");
-      setPrice("");
-      setDescription("");
-      setStock("");
-      setCategory("");
-      setGender("");
-      setImage(null);
-      if (imageInputRef.current) {
-        imageInputRef.current.value = null;
-      }
-
-      // Redireciona
-      navigate("/");
+    // Limpa o formulário
+    setName("");
+    setPrice("");
+    setDescription("");
+    setStock("");
+    setCategory("");
+    setGender("");
+    setImage(null);
+    if (imageInputRef.current) {
+      imageInputRef.current.value = null;
     }
 
     setIsLoading(false);
@@ -219,8 +171,8 @@ export default function ProductForm() {
         name="gender"
       >
         <option value="">Selecione o gênero</option>
-        <option value="Masculino">Masculino</option>
-        <option value="Feminino">Feminino</option>
+        <option value="masculino">masculino</option>
+        <option value="feminino">feminino</option>
         <option value="Unissex">Unissex</option>
       </select>
 
