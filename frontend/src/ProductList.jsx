@@ -1,15 +1,20 @@
 import { useEffect, useState } from "react";
-import { supabase } from "./supabase";
 import ProductCard from "./ProductCard";
 import { useParams } from "react-router-dom";
 import "./ProductList.css";
 import Pagination from "./Pagination";
+import {
+  getAcessorios,
+  getCalcas,
+  getCamisas,
+  getProdutos,
+} from "./api";
 
 export default function ProductList() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage, setPostsPerPage] = useState(10);
+  const [postsPerPage] = useState(10);
 
   const params = useParams();
 
@@ -17,73 +22,58 @@ export default function ProductList() {
     setCurrentPage(1);
   }, [params.categoria]);
 
-  let categoria;
-  switch (params.categoria) {
-    case "camisas":
-      categoria = "Camisas";
-      break;
-    case "calcas":
-      categoria = "Calças";
-      break;
-    case "acessorios":
-      categoria = "Acessórios";
-      break;
-    case "calcados":
-      categoria = "Calçados";
-      break;
-    case "intimas":
-      categoria = "Intimo";
-      break;
-    default:
-      categoria = null;
-      break;
-  }
-
   const carregarProdutos = async () => {
     setLoading(true);
+    let produtosCarregados = [];
 
-    const { data: urlData, error } = supabase.storage
-      .from("products-json")
-      .getPublicUrl("produtos.json");
-
-    if (error) {
-      console.error("Erro ao obter URL do JSON:", error);
-      setLoading(false);
-      return;
+    let categoria;
+    switch (params.categoria) {
+      case "camisas":
+        categoria = "Camisas";
+        produtosCarregados = await getCamisas();
+        break;
+      case "calcas":
+        categoria = "Calças";
+        produtosCarregados = await getCalcas();
+        break;
+      case "acessorios":
+        categoria = "Acessórios";
+        produtosCarregados = await getAcessorios();
+        break;
+      case "calcados":
+        categoria = "Calçados";
+        // A função getCalcados não existe no arquivo api.js, então vamos buscar todos
+        produtosCarregados = await getProdutos();
+        break;
+      case "intimas":
+        categoria = "Intimo";
+        // A função getIntimas não existe no arquivo api.js, então vamos buscar todos
+        produtosCarregados = await getProdutos();
+        break;
+      default:
+        categoria = null;
+        produtosCarregados = await getProdutos();
+        break;
     }
 
-    try {
-      const response = await fetch(`${urlData.publicUrl}?t=${Date.now()}`);
-      if (!response.ok) throw new Error("Erro ao carregar JSON");
+    // A API retorna um array. Se o JSON do Supabase tivesse um único objeto, ele seria transformado em array.
+    // Aqui não é necessário, pois a API já retorna um array.
+    setProducts(produtosCarregados);
 
-      const json = await response.json();
-      const lista = Array.isArray(json) ? json : [json];
-
-      setProducts(lista);
-    } catch (err) {
-      console.error("Erro ao buscar produtos:", err);
-    } finally {
-      setLoading(false);
-    }
+    setLoading(false);
   };
 
   useEffect(() => {
     carregarProdutos();
-  }, []);
+  }, [params.categoria]);
 
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const correspondentPosts = products.filter(
-    (p) => p.category === categoria || categoria === null
-  );
-  const currentPosts = correspondentPosts.slice(
-    indexOfFirstPost,
-    indexOfLastPost
-  );
+  const currentPosts = products.slice(indexOfFirstPost, indexOfLastPost);
 
   return (
     <div style={{ padding: "30px" }}>
-      <h2 className="products-title">{categoria}</h2>
+      <h2 className="products-title">{params.categoria || "Todos os Produtos"}</h2>
 
       {loading && <p className="message">Carregando produtos....</p>}
       {!loading && products.length === 0 && (
@@ -104,14 +94,14 @@ export default function ProductList() {
                 categoria={p.category}
                 genero={p.gender}
                 id={p.id}
-                onDelete={carregarProdutos} // <-- Atualiza após exclusão!
+                onDelete={carregarProdutos}
               />
             ))}
           </div>
 
           <Pagination
             postsPerPage={postsPerPage}
-            totalPosts={correspondentPosts.length}
+            totalPosts={products.length}
             setCurrentPage={setCurrentPage}
           />
         </>
