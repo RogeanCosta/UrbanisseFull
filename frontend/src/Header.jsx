@@ -34,6 +34,23 @@ export default function Header() {
         </div>
         <hr />
       </header>
+        <div class="filtragem">
+          <nav>
+            <select class="genero">
+              <option value="">Selecione um gênero</option>
+              <option value="masculino">Mascuino</option>
+              <option value="feminino">Feminino</option>
+              <option value="unissex">Unissex</option>
+            </select>
+          </nav>
+          <nav>
+            <select class="estoque">
+              <option value="">Todos os itens</option>
+              <option value="estoque">Em estoque</option>
+              <option value="sem-estoque">Sem estoque</option>
+            </select>
+          </nav>
+        </div>
     </>
   );
 }

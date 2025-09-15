@@ -37,6 +37,24 @@
   border-radius: 4px;
 }
 
+.filtragem {
+  display: flex;
+  flex: auto;
+  position: absolute;
+  margin-left: 45px;
+}
+
+.estoque {
+  border-radius: 10px;
+  border: solid;
+  margin-left: 10px;
+}
+
+.genero {
+  border: solid;
+  border-radius: 10px;
+}
+
 /*responsividade*/
 @media (max-width: 562px){
 .header {
