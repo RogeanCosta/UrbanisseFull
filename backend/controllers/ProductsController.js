@@ -2,7 +2,7 @@
 const { PrismaClient, Category, Gender } = require('../generated/prisma');
 const prisma = new PrismaClient();
 const { PutObjectCommand } = require('@aws-sdk/client-s3');
-const { s3 } = require('../s3'); // seu arquivo de configuração do S3
+const { s3 } = require('../s3'); // Arquivo de configuração do S3
 
 const BUCKET_NAME = process.env.AWS_BUCKET_NAME;
 const REGION = process.env.AWS_REGION;
@@ -21,6 +21,23 @@ exports.getProducts = async (req, res) => {
     res.status(500).json({ error: 'Erro ao buscar produtos' });
    }
 };
+
+exports.getProduct = async (req, res) => {
+  const {id} = req.params;
+
+  try {
+    const product = await prisma.products.findMany({
+      where: {
+        id: parseInt(id)
+      }
+    });
+
+    res.status(200).json(product);
+  } 
+  catch (error) {
+    res.status(500).json({error: `Erro ao buscar produto ${id}`});
+  }
+}
 
 exports.getProductsCamisa = async (req, res) => {
   try {
@@ -94,9 +111,6 @@ exports.createProduct = async (req, res) => {
     const { name, price, description, stock, category, gender } = req.body;
     const file = req.file;
 
-    console.log(req.body);  // Deve exibir os outros campos
-    console.log(req.file);
-
     if (!file) {
       return res.status(400).json({ error: 'Arquivo de imagem é obrigatório' });
     }
@@ -132,8 +146,6 @@ exports.createProduct = async (req, res) => {
 
     res.status(201).json(newProduct);
   } catch (error) {
-    console.log(req.file);  // Deve exibir o buffer do arquivo
-    console.log(req.body);  // Deve exibir os outros campos
     console.error(error);
     res.status(500).json({ error: 'Erro ao criar o produto!' });
   }
@@ -145,8 +157,10 @@ exports.createProduct = async (req, res) => {
 
 exports.updateProduct = async (req, res) => {
   const { id } = req.params;
+
   try {
     const { name, price, description, stock, category, gender, imageUrl, imagePath } = req.body;
+    
     const updatedProduct = await prisma.products.update({
       where: {
         id: parseInt(id),

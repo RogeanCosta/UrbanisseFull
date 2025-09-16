@@ -10,7 +10,9 @@ export const getProdutos = async () => {
 
 export const getProduto = async (id) => {
   const response = await axios.get(`${API_URL}/produtos/${id}`);
-  return response.data;
+
+  // Como retorna apenas 1 produto, desempacotar da Array com o indice 0.
+  return response.data[0];
 };
 
 export const getCamisas = async () => {
@@ -28,8 +30,9 @@ export const getAcessorios = async () => {
   return response.data;
 };
 
-export const postProduto = async (formData) => {
-  const response = await axios.post(`${API_URL}/produtos`, formData, {headers: { "Content-Type": "multipart/form-data",}});
+// Necessário identificar o tipo de conteúdo como multipart/form-data para indicar que enviará uma imagem na requisição.
+export const postProduto = async (produto) => {
+  const response = await axios.post(`${API_URL}/produtos`, produto, {headers: { "Content-Type": "multipart/form-data",}});
   return response.data;
 };
 

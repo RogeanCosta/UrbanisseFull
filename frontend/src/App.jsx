@@ -20,9 +20,10 @@ function App() {
         <Route path="editarproduto/:id" element={<ProductEditor />} />
       </Routes>
       <ToastContainer 
-      position="top-right" 
-      autoClose={3000}
-      theme="dark" />
+        position="top-right" 
+        autoClose={3000}
+        theme="dark" 
+      />
     </BrowserRouter>
   );
 }
