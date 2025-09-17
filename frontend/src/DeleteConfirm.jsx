@@ -1,5 +1,6 @@
 import React from 'react';
 import { supabase } from './supabase';
+import { deleteProduto } from './api';
 
 export default function DeleteConfirmation({ produto, onCancel, onDeleted }) {
   if (!produto || !produto.id || !produto.imagePath) {
@@ -9,40 +10,10 @@ export default function DeleteConfirmation({ produto, onCancel, onDeleted }) {
 
   const handleDelete = async () => {
     try {
-      // Obter a URL pública do produtos.json
-      const { data: urlData, error: urlError } = supabase.storage
-        .from('products-json')
-        .getPublicUrl('produtos.json');
+      // Deleta o produto do banco de dados via API
+      await deleteProduto(produto.id);
 
-      if (urlError || !urlData?.publicUrl) {
-        console.error('Erro ao obter URL pública:', urlError?.message);
-        alert('Erro ao carregar lista de produtos.');
-        return;
-      }
-
-      const response = await fetch(`${urlData.publicUrl}?t=${Date.now()}`);
-      if (!response.ok) {
-        throw new Error('Erro ao buscar produtos.json');
-      }
-
-      const produtos = await response.json();
-      const produtosAtualizados = produtos.filter((p) => p.id !== produto.id);
-
-      const novoBlob = new Blob([JSON.stringify(produtosAtualizados)], {
-        type: 'application/json',
-      });
-
-      const { error: uploadError } = await supabase.storage
-        .from('products-json')
-        .upload('produtos.json', novoBlob, { upsert: true });
-
-      if (uploadError) {
-        console.error('Erro ao atualizar produtos.json:', uploadError.message);
-        alert('Erro ao excluir o produto.');
-        return;
-      }
-
-      // Excluir imagem
+      // Excluir imagem do storage
       const { error: imageError } = await supabase.storage
         .from('images')
         .remove([produto.imagePath]);
