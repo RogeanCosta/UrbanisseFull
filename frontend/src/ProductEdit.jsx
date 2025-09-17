@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { supabase } from "./supabase";
 import { useParams, useNavigate } from "react-router-dom";
 import "./ProductForm.css";
+import { getProdutos, getProduto, putProduto } from "./api";
+import { toast } from "react-toastify";
 
 export default function ProductEditor() {
-  const [products, setProducts] = useState([]);
   const [formData, setFormData] = useState({
     name: "",
     price: "",
@@ -14,104 +14,61 @@ export default function ProductEditor() {
     gender: "",
   });
   const [isLoading, setIsLoading] = useState(false);
-
   const { id } = useParams();
-  const navigate = useNavigate();
+  const navigate = useNavigate(); 
 
   function capitalizeFirst(str) {
     if (!str) return "";
     return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
   }
 
+  // useEffect para fazer um GET produto/id no bdd e por as informações no form.
   useEffect(() => {
-    async function fetchProducts() {
+    async function fetchProduto() {
       try {
-        const { data: urlData } = supabase.storage
-          .from("products-json")
-          .getPublicUrl("produtos.json");
+        // Função axios para requisição GET produto por seu ID.
+        const product = await getProduto(id);
 
-        const response = await fetch(`${urlData.publicUrl}?t=${Date.now()}`);
-        const text = await response.text();
-        const parsed = JSON.parse(text);
-        const productsArray = Array.isArray(parsed) ? parsed : [parsed];
-
-        setProducts(productsArray);
-      } catch (error) {
-        console.error("Erro ao carregar JSON:", error);
+        // Caso o produto seja encontrado, puxa as informações dele e põe no form de edição
+        if (product) {
+          setFormData({
+            name: product.name,
+            price: product.price,
+            description: product.description,
+            stock: product.stock,
+            category: product.category,
+            gender: product.gender
+          })
+        }
+      }
+      catch (error) {
+        console.error(error);
       }
     }
 
-    fetchProducts();
-  }, []);
-
-  useEffect(() => {
-    if (id && products.length > 0) {
-      const product = products.find((p) => p.id === parseInt(id));
-      if (product) {
-        setFormData({
-          name: product.name,
-          price: product.price,
-          description: product.description,
-          stock: product.stock,
-          category: product.category,
-          gender: product.gender,
-        });
-      }
-    }
-  }, [id, products]);
-
-  const handleChange = (e) => {
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
+    fetchProduto();
+  }, [id])  
 
   const handleUpdate = async (e) => {
     e.preventDefault();
     setIsLoading(true);
 
-    const updatedProducts = products.map((product) => {
-      if (product.id === parseInt(id)) {
-        return {
-          ...product,
-          ...formData,
-          price: parseFloat(formData.price),
-          stock: parseInt(formData.stock),
-          name: formData.name.trim(),
-          description: formData.description.trim(),
-          category: capitalizeFirst(formData.category.trim()),
-          gender: capitalizeFirst(formData.gender.trim()),
-        };
-      }
-      return product;
-    });
+    try {
+      await putProduto(id, formData);
 
-    const updatedJson = new Blob([JSON.stringify(updatedProducts)], {
-      type: "application/json",
-    });
-
-    const { error } = await supabase.storage
-      .from("products-json")
-      .upload("produtos.json", updatedJson, { upsert: true });
-
-    if (error) {
-      alert("Erro ao salvar alterações");
-      console.error(error);
-    } else {
-      alert("Produto atualizado com sucesso!");
-      setProducts(updatedProducts);
-
-      setFormData({
-        name: "",
-        price: "",
-        description: "",
-        stock: "",
-        category: "",
-        gender: "",
-      });
-
-      navigate("/");
+      toast.success("Produto editado com sucesso! 🎉")
     }
-
+    catch (error) {
+      toast.error("Erro ao editar o produto. 😢")
+      console.error(error);
+    }
+    
     setIsLoading(false);
+    navigate('/')
+  }
+
+  const handleChange = (e) => {
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   return (
@@ -182,8 +139,8 @@ export default function ProductEditor() {
             required
           >
             <option value="">Selecione o gênero</option>
-            <option value="Masculino">Masculino</option>
-            <option value="Feminino">Feminino</option>
+            <option value="masculino">Masculino</option>
+            <option value="feminino">Feminino</option>
             <option value="Unissex">Unissex</option>
           </select>
 

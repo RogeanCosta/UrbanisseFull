@@ -61,6 +61,7 @@ export default function ProductList() {
     setProducts(produtosCarregados);
 
     setLoading(false);
+
   };
 
   useEffect(() => {
@@ -74,7 +75,6 @@ export default function ProductList() {
   return (
     <div style={{ padding: "30px" }}>
       <h2 className="products-title">{params.categoria || "Todos os Produtos"}</h2>
-
       {loading && <p className="message">Carregando produtos....</p>}
       {!loading && products.length === 0 && (
         <p className="message">Nenhum produto encontrado.</p>
