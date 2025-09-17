@@ -7,6 +7,7 @@ const productsController = require('../controllers/ProductsController');
 
 // Definição de rotas
 router.get('/produtos', productsController.getProducts);
+router.get('/produtos/:id', productsController.getProduct);
 router.get('/produtos/camisas', productsController.getProductsCamisa);
 router.get('/produtos/calcas', productsController.getProductsCalca);
 router.get('/produtos/acessorios', productsController.getProductsAcessorio);

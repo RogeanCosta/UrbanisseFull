@@ -1,5 +1,4 @@
 import { useRef, useState } from "react";
-import { supabase } from "./supabase";
 import { useNavigate } from "react-router-dom";
 import "./ProductForm.css";
 import { toast } from "react-toastify";
@@ -67,17 +66,22 @@ export default function ProductForm() {
     };
 
     try {
+      // Necessário usar o objeto FormData quando vai enviar arquivos (como imagens) junto com os demais campos do formulário.
       const formData = new FormData();
+
+      // Adicionando os valores do formulário ao objeto FormData
       Object.entries(newProduct).forEach(([key, value]) => {
-        formData.append(key, value)
+        formData.append(key, value);
       });
       formData.append("file", image);
 
+      // Função axios para requisição POST /produtos
       await postProduto(formData);
 
       toast.success("Produto cadastrado com sucesso! 🎉");
       console.log(Response.data);
-    } catch (error) {
+    } 
+    catch (error) {
       console.error(error);
       toast.error("Erro ao cadastrar produto 😢");
     }
@@ -90,10 +94,8 @@ export default function ProductForm() {
     setCategory("");
     setGender("");
     setImage(null);
-    if (imageInputRef.current) {
+    if (imageInputRef.current)
       imageInputRef.current.value = null;
-    }
-
     setIsLoading(false);
   };
 
