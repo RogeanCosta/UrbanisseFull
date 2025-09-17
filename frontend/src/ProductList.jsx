@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
-import { supabase } from "./supabase";
-import ProductCard from "./ProductCard";
-import { useParams } from "react-router-dom";
-import "./ProductList.css";
-import Pagination from "./Pagination";
+import { useEffect, useState } from 'react';
+import { supabase } from './supabase';
+import ProductCard from './ProductCard';
+import { useParams } from 'react-router-dom';
+import './ProductList.css';
+import Pagination from './Pagination';
 
 export default function ProductList() {
   const [products, setProducts] = useState([]);
@@ -19,20 +19,20 @@ export default function ProductList() {
 
   let categoria;
   switch (params.categoria) {
-    case "camisas":
-      categoria = "Camisas";
+    case 'camisas':
+      categoria = 'Camisas';
       break;
-    case "calcas":
-      categoria = "Calças";
+    case 'calcas':
+      categoria = 'Calças';
       break;
-    case "acessorios":
-      categoria = "Acessórios";
+    case 'acessorios':
+      categoria = 'Acessórios';
       break;
-    case "calcados":
-      categoria = "Calçados";
+    case 'calcados':
+      categoria = 'Calçados';
       break;
-    case "intimas":
-      categoria = "Intimo";
+    case 'intimas':
+      categoria = 'Intimo';
       break;
     default:
       categoria = null;
@@ -43,25 +43,25 @@ export default function ProductList() {
     setLoading(true);
 
     const { data: urlData, error } = supabase.storage
-      .from("products-json")
-      .getPublicUrl("produtos.json");
+      .from('products-json')
+      .getPublicUrl('produtos.json');
 
     if (error) {
-      console.error("Erro ao obter URL do JSON:", error);
+      console.error('Erro ao obter URL do JSON:', error);
       setLoading(false);
       return;
     }
 
     try {
       const response = await fetch(`${urlData.publicUrl}?t=${Date.now()}`);
-      if (!response.ok) throw new Error("Erro ao carregar JSON");
+      if (!response.ok) throw new Error('Erro ao carregar JSON');
 
       const json = await response.json();
       const lista = Array.isArray(json) ? json : [json];
 
       setProducts(lista);
     } catch (err) {
-      console.error("Erro ao buscar produtos:", err);
+      console.error('Erro ao buscar produtos:', err);
     } finally {
       setLoading(false);
     }
@@ -74,15 +74,15 @@ export default function ProductList() {
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const correspondentPosts = products.filter(
-    (p) => p.category === categoria || categoria === null
+    (p) => p.category === categoria || categoria === null,
   );
   const currentPosts = correspondentPosts.slice(
     indexOfFirstPost,
-    indexOfLastPost
+    indexOfLastPost,
   );
 
   return (
-    <div style={{ padding: "30px" }}>
+    <div style={{ padding: '30px' }}>
       <h2 className="products-title">{categoria}</h2>
 
       {loading && <p className="message">Carregando produtos....</p>}

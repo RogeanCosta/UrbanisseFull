@@ -1,0 +1,30 @@
+.wrapper {
+  margin-bottom: 25px;
+}
+
+.input,
+.input:focus {
+  width: 350px;
+  height: 50px;
+  font-size: 20px;
+  font-weight: normal;
+  border-radius: 8px;
+  padding: 12px 20px;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: #232323;
+  box-sizing: border-box;
+}
+
+.input::placeholder {
+  font-family: 'Inter', sans-serif;
+  font-size: 20px;
+  color: #7b7b7b;
+}
+
+.error {
+  font-family: 'Inter', sans-serif;
+  color: #f31;
+  font-size: 12px;
+  margin-top: 4px;
+}

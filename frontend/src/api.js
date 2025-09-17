@@ -51,7 +51,7 @@ export const getUsuarios = async () => {
 
 export const postUsuarios = async (usuario) => {
   const response = await axios.post(`${API_URL}/users`, usuario);
-  return response.data;
+  return response;
 };
 
 export const putUsuario = async (id, usuario) => {
@@ -62,4 +62,16 @@ export const putUsuario = async (id, usuario) => {
 export const deleteUsuario = async (id) => {
   const response = await axios.delete(`${API_URL}/users/${id}`);
   return response.data;
+};
+
+// ======== NOVA ROTA =============
+export const getUsuario = async (id) => {
+  const response = await axios.get(`${API_URL}/users/${id}`);
+  return response.data;
+};
+
+// ======== NOVA ROTA*** =============
+export const postCredentials = async (email, password) => {
+  const response = await axios.post(`${API_URL}/login`, { email, password });
+  return response;
 };
