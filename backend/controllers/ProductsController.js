@@ -1,8 +1,16 @@
 // Configuração Básica
 const { PrismaClient, Category, Gender } = require('../generated/prisma');
 const prisma = new PrismaClient();
+const { PutObjectCommand } = require('@aws-sdk/client-s3');
+const { s3 } = require('../s3'); // Arquivo de configuração do S3
 
-// Gerenciamento de rotas
+const BUCKET_NAME = process.env.AWS_BUCKET_NAME;
+const REGION = process.env.AWS_REGION;
+
+
+
+// ==================== LISTAGEM ====================
+
 exports.getProducts = async (req, res) => {
   try {
     const product = await prisma.products.findMany();
@@ -13,6 +21,23 @@ exports.getProducts = async (req, res) => {
     res.status(500).json({ error: 'Erro ao buscar produtos' });
    }
 };
+
+exports.getProduct = async (req, res) => {
+  const {id} = req.params;
+
+  try {
+    const product = await prisma.products.findMany({
+      where: {
+        id: parseInt(id)
+      }
+    });
+
+    res.status(200).json(product);
+  } 
+  catch (error) {
+    res.status(500).json({error: `Erro ao buscar produto ${id}`});
+  }
+}
 
 exports.getProductsCamisa = async (req, res) => {
   try {
@@ -59,6 +84,9 @@ exports.getProductsAcessorio = async (req, res) => {
    }
 };
 
+
+
+// ==================== DELETAR PRODUTO ====================
 exports.deleteProduct = async (req, res) => {
   const { id } = req.params;
 
@@ -74,22 +102,48 @@ exports.deleteProduct = async (req, res) => {
   }
 };
 
-// Nova rota para criar um produto
+
+
+// ==================== CRIAR PRODUTO ====================
+
 exports.createProduct = async (req, res) => {
   try {
-    const { name, price, description, stock, category, gender, imageUrl, imagePath } = req.body;
+    const { name, price, description, stock, category, gender } = req.body;
+    const file = req.file;
+
+    if (!file) {
+      return res.status(400).json({ error: 'Arquivo de imagem é obrigatório' });
+    }
+
+    // Nome único para o arquivo no bucket
+    const s3Key = `products/${Date.now()}-${file.originalname}`;
+
+    // Upload para o S3
+    await s3.send(
+      new PutObjectCommand({
+        Bucket: BUCKET_NAME,
+        Key: s3Key,
+        Body: file.buffer,
+        ContentType: file.mimetype,
+      })
+    );
+
+    // URL pública
+    const imageUrl = `https://${BUCKET_NAME}.s3.${REGION}.amazonaws.com/${s3Key}`;
+
     const newProduct = await prisma.products.create({
       data: {
         name,
-        price,
+        price: parseFloat(price),
         description,
-        stock,
+        stock: parseFloat(stock),
         category,
         gender,
         imageUrl,
-        imagePath
+        imagePath: s3Key
       }
     });
+
     res.status(201).json(newProduct);
   } catch (error) {
     console.error(error);
@@ -97,11 +151,16 @@ exports.createProduct = async (req, res) => {
   }
 };
 
-// Nova rota para atualizar um produto
+
+
+// ==================== ATUALIZAR PRODUTO ====================
+
 exports.updateProduct = async (req, res) => {
   const { id } = req.params;
+
   try {
     const { name, price, description, stock, category, gender, imageUrl, imagePath } = req.body;
+    
     const updatedProduct = await prisma.products.update({
       where: {
         id: parseInt(id),

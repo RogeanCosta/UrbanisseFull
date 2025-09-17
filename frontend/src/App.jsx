@@ -1,21 +1,28 @@
-import React from 'react';
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
-import Error from './paginaErro.jsx';
-import ProductForm from './ProductForm';
-import ProductList from './ProductList';
-import ProductEditor from './ProductEdit.jsx';
-import Header from './Header.jsx';
-import Login from './Components/Login/Login.jsx';
-import './App.css';
-import { UserStorage } from './UserContext.jsx';
-import HeaderLogin from './Components/Login/HeaderLogin.jsx';
-import ProtectedRouter from './Components/Helper/ProtectedRouter.jsx';
+import React from "react";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
+import Error from "./paginaErro.jsx";
+import ProductForm from "./ProductForm";
+import ProductList from "./ProductList";
+import ProductEditor from "./ProductEdit.jsx";
+import Header from "./Header.jsx";
+import Login from "./Components/Login/Login.jsx";
+import "./App.css";
+import { UserStorage } from "./UserContext.jsx";
+import HeaderLogin from "./Components/Login/HeaderLogin.jsx";
+import ProtectedRouter from "./Components/Helper/ProtectedRouter.jsx";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function AppRoutes() {
   const location = useLocation();
 
   // checa se estamos nas rotas de login
-  const isLoginRoute = location.pathname.startsWith('/login');
+  const isLoginRoute = location.pathname.startsWith("/login");
 
   return (
     <>
@@ -66,6 +73,11 @@ function App() {
     <BrowserRouter>
       <UserStorage>
         <AppRoutes />
+        <ToastContainer
+          position="top-right"
+          autoClose={3000}
+          theme="dark"
+        />
       </UserStorage>
     </BrowserRouter>
   );
