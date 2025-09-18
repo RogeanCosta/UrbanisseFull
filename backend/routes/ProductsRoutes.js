@@ -9,10 +9,10 @@ router.get('/produtos/camisas', productsController.getProductsCamisa);
 router.get('/produtos/calcas', productsController.getProductsCalca);
 router.get('/produtos/acessorios', productsController.getProductsAcessorio);
 router.delete('/produtos/:id', productsController.deleteProduct); // nome da função pode ser alterada depois.
-router.get('/produtos/intimas', productController.getProductsIntimas);
-router.get('/produtos/calcados', productController.getProductsCalcados);
-router.get('/produtos/stock/:disponibilidade', exports.getProductsByStock )
-router.get('/produtos/gender/:genero',  exports.getProductsByGender) 
+router.get('/produtos/intimas', productsController.getProductsIntimas);
+router.get('/produtos/calcados', productsController.getProductsCalcados);
+router.get('/produtos/stock/:disponibilidade', productsController.getProductsByStock )
+router.get('/produtos/gender/:genero',  productsController.getProductsByGender) 
 router.post("/produtos", productsController.createProduct);
 router.put("/produtos/:id", productsController.updateProduct);
 // TODO: DEFINIR RESTANTE DAS ROTAS...
