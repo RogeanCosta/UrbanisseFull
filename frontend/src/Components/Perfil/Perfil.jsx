@@ -86,7 +86,8 @@ export default function Perfil() {
             let updatedData = {}
 
             if (editModalOpen.info === "e-mail") {
-                updatedData = { email: newValue };  
+                updatedData = { email: newValue }; 
+                window.localStorage.setItem('urbanisse-email', updatedData.email); 
             }
             else if (editModalOpen.info === "senha") {
                 updatedData = { password: newValue };
@@ -94,8 +95,7 @@ export default function Perfil() {
             else if (editModalOpen.info === "telefone") {
                 updatedData = { phone: newValue };
             }
-
-            console.log(loggedUser.id);
+            
             await putUsuario(loggedUser.id, updatedData);
 
             toast.success("Usuário editado com sucesso!");

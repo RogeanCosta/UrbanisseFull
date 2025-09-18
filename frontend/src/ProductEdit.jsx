@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "./ProductForm.css";
-import { getProdutos, getProduto, putProduto } from "./api";
+import { getProduto, putProduto } from "./api";
 import { toast } from "react-toastify";
 
 export default function ProductEditor() {

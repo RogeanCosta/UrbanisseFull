@@ -24,6 +24,10 @@
   margin-bottom: 0.2rem;
 }
 
+.modal p {
+  margin-bottom: 1rem;
+}
+
 .modal-actions {
   margin-top: 2rem;
   display: flex;
