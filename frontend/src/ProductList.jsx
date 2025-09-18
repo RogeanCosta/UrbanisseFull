@@ -5,8 +5,10 @@ import "./ProductList.css";
 import Pagination from "./Pagination";
 import {
   getAcessorios,
+  getCalcados,
   getCalcas,
   getCamisas,
+  getIntimas,
   getProdutos,
 } from "./api";
 
@@ -42,13 +44,11 @@ export default function ProductList() {
         break;
       case "calcados":
         categoria = "Calçados";
-        // A função getCalcados não existe no arquivo api.js, então vamos buscar todos
-        produtosCarregados = await getProdutos();
+        produtosCarregados = await getCalcados();
         break;
       case "intimas":
         categoria = "Intimo";
-        // A função getIntimas não existe no arquivo api.js, então vamos buscar todos
-        produtosCarregados = await getProdutos();
+        produtosCarregados = await getIntimas();
         break;
       default:
         categoria = null;

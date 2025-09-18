@@ -12,8 +12,10 @@ router.get('/produtos/calcas', productsController.getProductsCalca);
 router.get('/produtos/acessorios', productsController.getProductsAcessorio);
 router.get('/produtos/:id', productsController.getProduct);
 router.delete('/produtos/:id', productsController.deleteProduct); // nome da função pode ser alterada depois.
-
-// Novas rotas
+router.get('/produtos/intimas', productsController.getProductsIntimas);
+router.get('/produtos/calcados', productsController.getProductsCalcados);
+router.get('/produtos/stock/:disponibilidade', productsController.getProductsByStock )
+router.get('/produtos/gender/:genero',  productsController.getProductsByGender) 
 router.post(
   '/produtos',
   upload.single('file'),

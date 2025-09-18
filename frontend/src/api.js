@@ -30,6 +30,16 @@ export const getAcessorios = async () => {
   return response.data;
 };
 
+export const getCalcados = async () => {
+  const response = await axios.get(`${API_URL}/produtos/calcados`);
+  return response.data;
+};
+
+export const getIntimas = async () => {
+  const response = await axios.get(`${API_URL}/produtos/intimas`);
+  return response.data;
+};
+
 // Necessário identificar o tipo de conteúdo como multipart/form-data para indicar que enviará uma imagem na requisição.
 export const postProduto = async (produto) => {
   const response = await axios.post(`${API_URL}/produtos`, produto, {headers: { "Content-Type": "multipart/form-data",}});
