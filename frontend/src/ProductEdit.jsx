@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "./ProductForm.css";
-import { getProdutos, getProduto, putProduto } from "./api";
+import { getProduto, putProduto } from "./api";
 import { toast } from "react-toastify";
 
 export default function ProductEditor() {
@@ -54,7 +54,14 @@ export default function ProductEditor() {
     setIsLoading(true);
 
     try {
-      await putProduto(id, formData);
+      await putProduto(id, {
+            name: formData.name,
+            price: parseFloat(formData.price),
+            description: formData.description,
+            stock: parseInt(formData.stock),
+            category: formData.category,
+            gender: formData.gender
+      });
 
       toast.success("Produto editado com sucesso! 🎉")
     }

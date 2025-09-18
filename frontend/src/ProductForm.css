@@ -23,7 +23,7 @@ form button {
 form input,
 textarea,
 select,
-input:focus {
+input:focus, input {
   font-size: 0.9rem;
   outline: none;
   color: #ffffff;

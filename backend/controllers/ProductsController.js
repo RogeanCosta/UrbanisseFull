@@ -150,7 +150,76 @@ exports.getProductsAcessorio = async (req, res) => {
   }
 };
 
+exports.getProductsByGender = async (req, res) => {
+  try {
+    const { gender } = req.params;
 
+    const products = await prisma.products.findMany({
+      where: {
+        gender: gender
+      }
+    });
+
+    res.status(200).json(products);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Erro ao buscar produtos por gênero' });
+  }
+};
+
+exports.getProductsIntimas = async (req, res) => {
+  try {
+    const products = await prisma.products.findMany({
+      where: {
+        category: 'Íntimas'
+      }
+    });
+
+    res.status(200).json(products);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Erro ao buscar produtos íntimas' });
+  }
+};
+
+exports.getProductsCalcados = async (req, res) => {
+  try {
+    const products = await prisma.products.findMany({
+      where: {
+        category: 'Calçados'
+      }
+    });
+
+    res.status(200).json(products);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: 'Erro ao buscar produtos calçados' });
+  }
+};
+
+exports.getProductsByStock = async (req, res) => {
+  try {
+    const { min } = req.params;
+    let condition;
+
+    if (min === 'semestoque') {
+      condition = { equals: 0 };     // estoque igual a 0
+    } else {
+      condition = { not: 0 };        // estoque diferente de 0
+    } 
+
+    const products = await prisma.products.findMany({
+      where: {
+        stock: condition
+      }
+    });
+
+    res.status(200).json(products);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Erro ao buscar produtos por estoque' });
+  }
+};
 
 // ==================== DELETAR PRODUTO ====================
 exports.deleteProduct = async (req, res) => {
