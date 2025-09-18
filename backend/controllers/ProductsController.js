@@ -133,10 +133,10 @@ exports.getProductsCalcados = async (req, res) => {
 
 exports.getProductsByStock = async (req, res) => {
   try {
-    const { min } = req.params;
+    const { stock } = req.params;
     let condition;
 
-    if (min === 'semestoque') {
+    if (stock === 'semestoque') {
       condition = { equals: 0 };     // estoque igual a 0
     } else {
       condition = { not: 0 };        // estoque diferente de 0

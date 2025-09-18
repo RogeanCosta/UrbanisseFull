@@ -42,6 +42,18 @@
   gap: 10px;
 }
 
+.estoque {
+  border-radius: 10px;
+  border: solid;
+  margin-left: 10px;
+}
+
+.genero {
+  border: solid;
+  border-radius: 10px;
+}
+
+
 /*responsividade*/
 @media (max-width: 562px) {
   .header {

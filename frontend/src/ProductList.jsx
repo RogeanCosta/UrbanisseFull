@@ -8,10 +8,13 @@ import {
   getCalcas,
   getCamisas,
   getProdutos,
+  getCalcados,
+  getIntimos,
+  getProductsByGender,
+  getProductsByStock
 } from "./api";
-import { getProductsByGender } from "../../backend/controllers/ProductsController";
 
-export default function ProductList({gender}) {
+export default function ProductList({gender, stock}) {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -27,9 +30,7 @@ export default function ProductList({gender}) {
     setLoading(true);
     let produtosCarregados = [];
 
-    let categoria;
-    let gender;
-    let stock;
+    let categoria = "";
 
     if (gender === null && stock === null){
       switch (params.categoria) {
@@ -47,13 +48,11 @@ export default function ProductList({gender}) {
           break;
         case "calcados":
           categoria = "Calçados";
-          // A função getCalcados não existe no arquivo api.js, então vamos buscar todos
-          produtosCarregados = await getProdutos();
+          produtosCarregados = await getCalcados();
           break;
         case "intimas":
           categoria = "Intimo";
-          // A função getIntimas não existe no arquivo api.js, então vamos buscar todos
-          produtosCarregados = await getProdutos();
+          produtosCarregados = await getIntimos();
           break;
         default:
           categoria = null;
@@ -61,10 +60,11 @@ export default function ProductList({gender}) {
           break;
       }
     }else if (gender !== null && stock === null){
-      produtosCarregados = await getProductsByGender;
+      produtosCarregados = await getProductsByGender(gender);
     }else if (stock !== null && gender === null){
-      produtosCarregados = await getProductsByStock;
-    }
+      produtosCarregados = await getProductsByStock(stock);
+    }/*else if (stock !== null && gender !== null){
+      produtosCarregados = await getProdutos();}*/
 
     // A API retorna um array. Se o JSON do Supabase tivesse um único objeto, ele seria transformado em array.
     // Aqui não é necessário, pois a API já retorna um array.
@@ -76,8 +76,7 @@ export default function ProductList({gender}) {
 
   useEffect(() => {
     carregarProdutos();
-  }, [params.categoria],
-     [params.gender]);
+  }, [params.categoria, gender, stock]);
 
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;

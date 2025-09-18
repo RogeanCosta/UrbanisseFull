@@ -17,10 +17,12 @@ import HeaderLogin from "./Components/Login/HeaderLogin.jsx";
 import ProtectedRouter from "./Components/Helper/ProtectedRouter.jsx";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Filter from "./filters.jsx";
 
 function AppRoutes() {
   const location = useLocation();
-
+  const [gender, setGender] = React.useState(null);
+  const [stock, setStock] = React.useState(null);
   // checa se estamos nas rotas de login
   const isLoginRoute = location.pathname.startsWith("/login");
 
@@ -33,7 +35,8 @@ function AppRoutes() {
           path="/"
           element={
             <ProtectedRouter>
-              <ProductList />
+              <Filter setGender={setGender} setStock={setStock}/>
+              <ProductList gender={gender} stock={stock}/>
             </ProtectedRouter>
           }
         />
@@ -41,7 +44,7 @@ function AppRoutes() {
           path="produtos/:categoria"
           element={
             <ProtectedRouter>
-              <ProductList />
+              <ProductList gender={null} stock={null}/>
             </ProtectedRouter>
           }
         />
