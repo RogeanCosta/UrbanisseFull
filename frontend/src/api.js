@@ -28,6 +28,16 @@ export const getAcessorios = async () => {
   return response.data;
 };
 
+export const getCalcados = async () => {
+  const response = await axios.get(`${API_URL}/produtos/calcados`);
+  return response.data;
+};
+
+export const getIntimas = async () => {
+  const response = await axios.get(`${API_URL}/produtos/intimas`);
+  return response.data;
+};
+
 export const postProduto = async (produto) => {
   const response = await axios.post(`${API_URL}/produtos`, produto);
   return response.data;
@@ -61,14 +71,5 @@ export const putUsuario = async (id, usuario) => {
 
 export const deleteUsuario = async (id) => {
   const response = await axios.delete(`${API_URL}/users/${id}`);
-  return response.data;
-};
-export const getCalcados = async () => {
-  const response = await axios.get(`${API_URL}/produtos/calcados`);
-  return response.data;
-};
-
-export const getIntimas = async () => {
-  const response = await axios.get(`${API_URL}/produtos/intimas`);
   return response.data;
 };

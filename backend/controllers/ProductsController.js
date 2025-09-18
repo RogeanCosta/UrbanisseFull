@@ -6,21 +6,21 @@ const prisma = new PrismaClient();
 exports.getProducts = async (req, res) => {
   try {
     const product = await prisma.products.findMany();
- 
-    res.status(200).json(product);
 
-   } catch (error) {
+    res.status(200).json(product);
+  } catch (error) {
     res.status(500).json({ error: 'Erro ao buscar produtos' });
-   }
+  }
 };
+
 exports.getProductsByGender = async (req, res) => {
   try {
     const { gender } = req.query;
 
     const products = await prisma.products.findMany({
       where: {
-        gender: gender
-      }
+        gender: gender,
+      },
     });
 
     res.status(200).json(products);
@@ -29,12 +29,13 @@ exports.getProductsByGender = async (req, res) => {
     res.status(500).json({ error: 'Erro ao buscar produtos por gênero' });
   }
 };
+
 exports.getProductsIntimas = async (req, res) => {
   try {
     const products = await prisma.products.findMany({
       where: {
-        category: 'Íntimas'
-      }
+        category: 'Intimo',
+      },
     });
 
     res.status(200).json(products);
@@ -43,12 +44,13 @@ exports.getProductsIntimas = async (req, res) => {
     res.status(500).json({ error: 'Erro ao buscar produtos íntimas' });
   }
 };
+
 exports.getProductsCalcados = async (req, res) => {
   try {
     const products = await prisma.products.findMany({
       where: {
-        category: 'Calçados'
-      }
+        category: 'Calçados',
+      },
     });
 
     res.status(200).json(products);
@@ -57,20 +59,21 @@ exports.getProductsCalcados = async (req, res) => {
     res.status(500).json({ error: 'Erro ao buscar produtos calçados' });
   }
 };
+
 exports.getProductsByStock = async (req, res) => {
   try {
     const { min } = req.params;
 
     if (min === 'semestoque') {
-      condition = { equals: 0 };     // estoque igual a 0
+      condition = { equals: 0 }; // estoque igual a 0
     } else {
-      condition = { not: 0 };        // estoque diferente de 0
-    } 
+      condition = { not: 0 }; // estoque diferente de 0
+    }
 
     const products = await prisma.products.findMany({
       where: {
-        stock: condition
-      }
+        stock: condition,
+      },
     });
 
     res.status(200).json(products);
@@ -79,49 +82,47 @@ exports.getProductsByStock = async (req, res) => {
     res.status(500).json({ error: 'Erro ao buscar produtos por estoque' });
   }
 };
+
 exports.getProductsCamisa = async (req, res) => {
   try {
     const product = await prisma.products.findMany({
-      where:{
-        category: 'Camisas'
-      }
+      where: {
+        category: 'Camisas',
+      },
     });
- 
-    res.status(200).json(product);
 
-   } catch (error) {
+    res.status(200).json(product);
+  } catch (error) {
     res.status(500).json({ error: 'Erro ao buscar produtos' });
-   }
+  }
 };
 
 exports.getProductsCalca = async (req, res) => {
   try {
     const product = await prisma.products.findMany({
-      where:{
-        category: 'Calças'
-      }
+      where: {
+        category: 'Calças',
+      },
     });
- 
-    res.status(200).json(product);
 
-   } catch (error) {
+    res.status(200).json(product);
+  } catch (error) {
     res.status(500).json({ error: 'Erro ao buscar produtos' });
-   }
+  }
 };
 
 exports.getProductsAcessorio = async (req, res) => {
   try {
     const product = await prisma.products.findMany({
-      where:{
-        category: 'Acessórios'
-      }
+      where: {
+        category: 'Acessórios',
+      },
     });
- 
-    res.status(200).json(product);
 
-   } catch (error) {
+    res.status(200).json(product);
+  } catch (error) {
     res.status(500).json({ error: 'Erro ao buscar produtos' });
-   }
+  }
 };
 
 exports.deleteProduct = async (req, res) => {
@@ -142,7 +143,16 @@ exports.deleteProduct = async (req, res) => {
 // Nova rota para criar um produto
 exports.createProduct = async (req, res) => {
   try {
-    const { name, price, description, stock, category, gender, imageUrl, imagePath } = req.body;
+    const {
+      name,
+      price,
+      description,
+      stock,
+      category,
+      gender,
+      imageUrl,
+      imagePath,
+    } = req.body;
     const newProduct = await prisma.products.create({
       data: {
         name,
@@ -152,8 +162,8 @@ exports.createProduct = async (req, res) => {
         category,
         gender,
         imageUrl,
-        imagePath
-      }
+        imagePath,
+      },
     });
     res.status(201).json(newProduct);
   } catch (error) {
@@ -166,7 +176,16 @@ exports.createProduct = async (req, res) => {
 exports.updateProduct = async (req, res) => {
   const { id } = req.params;
   try {
-    const { name, price, description, stock, category, gender, imageUrl, imagePath } = req.body;
+    const {
+      name,
+      price,
+      description,
+      stock,
+      category,
+      gender,
+      imageUrl,
+      imagePath,
+    } = req.body;
     const updatedProduct = await prisma.products.update({
       where: {
         id: parseInt(id),
@@ -179,8 +198,8 @@ exports.updateProduct = async (req, res) => {
         category,
         gender,
         imageUrl,
-        imagePath
-      }
+        imagePath,
+      },
     });
     res.status(200).json(updatedProduct);
   } catch (error) {
