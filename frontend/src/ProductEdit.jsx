@@ -54,7 +54,14 @@ export default function ProductEditor() {
     setIsLoading(true);
 
     try {
-      await putProduto(id, formData);
+      await putProduto(id, {
+            name: formData.name,
+            price: parseFloat(formData.price),
+            description: formData.description,
+            stock: parseInt(formData.stock),
+            category: formData.category,
+            gender: formData.gender
+      });
 
       toast.success("Produto editado com sucesso! 🎉")
     }

@@ -17,6 +17,7 @@ import HeaderLogin from "./Components/Login/HeaderLogin.jsx";
 import ProtectedRouter from "./Components/Helper/ProtectedRouter.jsx";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Perfil from "./Components/Perfil/Perfil.jsx";
 
 function AppRoutes() {
   const location = useLocation();
@@ -63,6 +64,11 @@ function AppRoutes() {
         />
         <Route path="/login/*" element={<Login />} />
         <Route path="*" element={<Error />} />
+        <Route path="perfil" element={
+         <ProtectedRouter>
+           <Perfil />
+         </ProtectedRouter>
+        } />
       </Routes>
     </>
   );
