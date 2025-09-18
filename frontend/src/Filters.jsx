@@ -4,10 +4,15 @@ import ProductList from './ProductList';
 
 export default function Filter({}) {
     const [gender, setGender] = useState('');
+    const [stock, setStock] = useState('');
     const[products, setProducts] = useState([]);
     
     const handleGenderChange = (e) => {
     setGender(e.target.value);
+    }
+
+    const handleStockChange = (k) => {
+    setStock(k.target.value);
     }
      
      useEffect (() => {
@@ -27,6 +32,23 @@ export default function Filter({}) {
             fetchDataGender();
      }, [gender]);
 
+     useEffect (() => {
+        const fetchDataStock = async () => {
+            if(!stock) {
+                setProducts([]);
+                return;
+            }
+
+            try {
+                const response = await axios.get(`http://localhost:3000/produtos/stock/${min}`);
+                    setProducts(response.data); 
+            } catch (error) {
+                console.error("Erro ao buscar dados:", error); 
+                }
+            };
+            fetchDataStock();
+     }, [stock]);
+
     return (
          <div className="filtragem">
           <nav>
@@ -38,7 +60,7 @@ export default function Filter({}) {
             </select>
           </nav>
           <nav>
-            <select className="estoque">
+            <select className="estoque" value={stock} onChange={handleStockChange}>
               <option value="">Todos os itens</option>
               <option value="estoque">Em estoque</option>
               <option value="sem-estoque">Sem estoque</option>
@@ -47,6 +69,7 @@ export default function Filter({}) {
 
           <div>
             <ProductList gender={gender}/>
+            <ProductList stock={stock}/>
           </div>
         </div>
     )

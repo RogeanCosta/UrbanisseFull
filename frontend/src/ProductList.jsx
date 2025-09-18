@@ -9,6 +9,7 @@ import {
   getCamisas,
   getProdutos,
 } from "./api";
+import { getProductsByGender } from "../../backend/controllers/ProductsController";
 
 export default function ProductList({gender}) {
   const [products, setProducts] = useState([]);
@@ -27,33 +28,42 @@ export default function ProductList({gender}) {
     let produtosCarregados = [];
 
     let categoria;
-    switch (params.categoria) {
-      case "camisas":
-        categoria = "Camisas";
-        produtosCarregados = await getCamisas();
-        break;
-      case "calcas":
-        categoria = "Calças";
-        produtosCarregados = await getCalcas();
-        break;
-      case "acessorios":
-        categoria = "Acessórios";
-        produtosCarregados = await getAcessorios();
-        break;
-      case "calcados":
-        categoria = "Calçados";
-        // A função getCalcados não existe no arquivo api.js, então vamos buscar todos
-        produtosCarregados = await getProdutos();
-        break;
-      case "intimas":
-        categoria = "Intimo";
-        // A função getIntimas não existe no arquivo api.js, então vamos buscar todos
-        produtosCarregados = await getProdutos();
-        break;
-      default:
-        categoria = null;
-        produtosCarregados = await getProdutos();
-        break;
+    let gender;
+    let stock;
+
+    if (gender === null && stock === null){
+      switch (params.categoria) {
+        case "camisas":
+          categoria = "Camisas";
+          produtosCarregados = await getCamisas();
+          break;
+        case "calcas":
+          categoria = "Calças";
+          produtosCarregados = await getCalcas();
+          break;
+        case "acessorios":
+          categoria = "Acessórios";
+          produtosCarregados = await getAcessorios();
+          break;
+        case "calcados":
+          categoria = "Calçados";
+          // A função getCalcados não existe no arquivo api.js, então vamos buscar todos
+          produtosCarregados = await getProdutos();
+          break;
+        case "intimas":
+          categoria = "Intimo";
+          // A função getIntimas não existe no arquivo api.js, então vamos buscar todos
+          produtosCarregados = await getProdutos();
+          break;
+        default:
+          categoria = null;
+          produtosCarregados = await getProdutos();
+          break;
+      }
+    }else if (gender !== null && stock === null){
+      produtosCarregados = await getProductsByGender;
+    }else if (stock !== null && gender === null){
+      produtosCarregados = await getProductsByStock;
     }
 
     // A API retorna um array. Se o JSON do Supabase tivesse um único objeto, ele seria transformado em array.
@@ -66,7 +76,8 @@ export default function ProductList({gender}) {
 
   useEffect(() => {
     carregarProdutos();
-  }, [params.categoria]);
+  }, [params.categoria],
+     [params.gender]);
 
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
