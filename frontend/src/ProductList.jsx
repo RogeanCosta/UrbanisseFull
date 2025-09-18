@@ -5,14 +5,14 @@ import { useParams } from "react-router-dom";
 import "./ProductList.css";
 import Pagination from "./Pagination";
 
-export default function ProductList() {
+export default function ProductList({gender}) {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage, setPostsPerPage] = useState(10);
 
   const params = useParams();
-
+  
   useEffect(() => {
     setCurrentPage(1);
   }, [params.categoria]);
@@ -74,7 +74,10 @@ export default function ProductList() {
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const correspondentPosts = products.filter(
-    (p) => p.category === categoria || categoria === null
+    (p) => 
+      (p.category === categoria || categoria === null) &&
+      (gender ? p.gender === gender : true)
+
   );
   const currentPosts = correspondentPosts.slice(
     indexOfFirstPost,
