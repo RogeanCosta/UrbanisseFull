@@ -1,0 +1,35 @@
+.login {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  /* min-height: 100vh; */
+  /*gap: 2rem; */
+}
+
+.login::after {
+  display: block;
+  content: '';
+  background: url('../../assets/login.jpg') no-repeat center left;
+  background-size: cover;
+}
+
+.forms {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 164px 138px;
+  max-width: 45.375rem;
+}
+
+@media (max-width: 65rem) {
+  .login {
+    grid-template-columns: 1fr;
+  }
+
+  .login::after {
+    display: none;
+  }
+
+  .forms {
+    max-width: 100%;
+  }
+}

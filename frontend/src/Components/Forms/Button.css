@@ -1,0 +1,37 @@
+form .button,
+.signup-area .link-btn {
+  font-family: 'Inter', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: #fff;
+  background: #3ab667;
+
+  display: flex;
+  justify-content: center;
+  max-width: 350px;
+  padding: 10px 141px;
+  border: none;
+  border-radius: 8px;
+  box-sizing: border-box;
+  cursor: pointer;
+  text-decoration: none;
+
+  line-height: initial;
+  text-align: initial;
+  margin-top: 0;
+  height: auto;
+}
+
+form .button:hover,
+form .button:focus,
+.link-btn:hover,
+.link-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px #beffd8, 0 0 0 4px #3ab667;
+}
+
+form .button:disabled {
+  background-color: #a8d5c2;
+  color: #fff;
+  cursor: not-allowed;
+}

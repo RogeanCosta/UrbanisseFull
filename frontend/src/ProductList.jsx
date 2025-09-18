@@ -44,12 +44,10 @@ export default function ProductList() {
         break;
       case "calcados":
         categoria = "Calçados";
-        // A função getCalcados não existe no arquivo api.js, então vamos buscar todos
         produtosCarregados = await getCalcados();
         break;
       case "intimas":
         categoria = "Intimo";
-        // A função getIntimas não existe no arquivo api.js, então vamos buscar todos
         produtosCarregados = await getIntimas();
         break;
       default:

@@ -1,0 +1,14 @@
+.header-login {
+  position: absolute;
+  top: 30px;
+  left: 27px;
+}
+
+.header-login .logo {
+  font-family: 'Inter', sans-serif;
+  font-size: 24px;
+  font-weight: 800;
+  color: #fff;
+  text-decoration: none;
+  cursor: pointer;
+}
