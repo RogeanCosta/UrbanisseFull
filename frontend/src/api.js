@@ -1,6 +1,6 @@
-import axios from 'axios';
+import axios from "axios";
 
-const API_URL = 'http://localhost:3000'; // Substitua pelo URL da sua API
+const API_URL = "http://localhost:3000"; // Substitua pelo URL da sua API
 
 // Referente aos produtos
 export const getProdutos = async () => {
@@ -52,7 +52,9 @@ export const getProductsByStock = async (min) => {
 
 // Necessário identificar o tipo de conteúdo como multipart/form-data para indicar que enviará uma imagem na requisição.
 export const postProduto = async (produto) => {
-  const response = await axios.post(`${API_URL}/produtos`, produto, {headers: { "Content-Type": "multipart/form-data",}});
+  const response = await axios.post(`${API_URL}/produtos`, produto, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
   return response.data;
 };
 
