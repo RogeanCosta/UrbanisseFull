@@ -79,7 +79,6 @@ export default function ProductForm() {
       await postProduto(formData);
 
       toast.success("Produto cadastrado com sucesso! 🎉");
-      console.log(Response.data);
     } 
     catch (error) {
       console.error(error);
