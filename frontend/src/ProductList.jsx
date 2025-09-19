@@ -10,16 +10,20 @@ import {
   getCamisas,
   getIntimas,
   getProdutos,
+  getCalcados,
+  getIntimos,
+  getProductsByGender,
+  getProductsByStock
 } from "./api";
 
-export default function ProductList() {
+export default function ProductList({gender, stock}) {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(10);
 
   const params = useParams();
-
+  
   useEffect(() => {
     setCurrentPage(1);
   }, [params.categoria]);
@@ -28,33 +32,41 @@ export default function ProductList() {
     setLoading(true);
     let produtosCarregados = [];
 
-    let categoria;
-    switch (params.categoria) {
-      case "camisas":
-        categoria = "Camisas";
-        produtosCarregados = await getCamisas();
-        break;
-      case "calcas":
-        categoria = "Calças";
-        produtosCarregados = await getCalcas();
-        break;
-      case "acessorios":
-        categoria = "Acessórios";
-        produtosCarregados = await getAcessorios();
-        break;
-      case "calcados":
-        categoria = "Calçados";
-        produtosCarregados = await getCalcados();
-        break;
-      case "intimas":
-        categoria = "Intimo";
-        produtosCarregados = await getIntimas();
-        break;
-      default:
-        categoria = null;
-        produtosCarregados = await getProdutos();
-        break;
-    }
+    let categoria = "";
+
+    if (gender === null && stock === null){
+      switch (params.categoria) {
+        case "camisas":
+          categoria = "Camisas";
+          produtosCarregados = await getCamisas();
+          break;
+        case "calcas":
+          categoria = "Calças";
+          produtosCarregados = await getCalcas();
+          break;
+        case "acessorios":
+          categoria = "Acessórios";
+          produtosCarregados = await getAcessorios();
+          break;
+        case "calcados":
+          categoria = "Calçados";
+          produtosCarregados = await getCalcados();
+          break;
+        case "intimas":
+          categoria = "Intimo";
+          produtosCarregados = await getIntimos();
+          break;
+        default:
+          categoria = null;
+          produtosCarregados = await getProdutos();
+          break;
+      }
+    }else if (gender !== null && stock === null){
+      produtosCarregados = await getProductsByGender(gender);
+    }else if (stock !== null && gender === null){
+      produtosCarregados = await getProductsByStock(stock);
+    }/*else if (stock !== null && gender !== null){
+      produtosCarregados = await getProdutos();}*/
 
     // A API retorna um array. Se o JSON do Supabase tivesse um único objeto, ele seria transformado em array.
     // Aqui não é necessário, pois a API já retorna um array.
@@ -66,7 +78,7 @@ export default function ProductList() {
 
   useEffect(() => {
     carregarProdutos();
-  }, [params.categoria]);
+  }, [params.categoria, gender, stock]);
 
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;

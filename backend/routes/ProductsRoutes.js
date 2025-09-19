@@ -13,7 +13,7 @@ router.get('/produtos/acessorios', productsController.getProductsAcessorio);
 
 router.get('/produtos/intimas', productsController.getProductsIntimas);
 router.get('/produtos/calcados', productsController.getProductsCalcados);
-router.get('/produtos/stock/:min', productsController.getProductsByStock);
+router.get('/produtos/stock/:stock', productsController.getProductsByStock);
 router.get('/produtos/gender/:gender', productsController.getProductsByGender);
 
 router.get('/produtos/:id', productsController.getProduct);
@@ -26,7 +26,6 @@ router.post("/produtos", upload.single("file"), productsController.createProduct
 
 // ROTAS PUT
 router.put("/produtos/:id", productsController.updateProduct);
-
 
 // exportação das rotas definidas
 module.exports = router;
