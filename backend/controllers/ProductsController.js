@@ -171,7 +171,7 @@ exports.getProductsIntimas = async (req, res) => {
   try {
     const products = await prisma.products.findMany({
       where: {
-        category: 'Íntimas'
+        category: 'Intimo'
       }
     });
 
