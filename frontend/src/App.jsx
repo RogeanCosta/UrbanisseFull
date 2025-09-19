@@ -35,7 +35,7 @@ function AppRoutes() {
           path="/"
           element={
             <ProtectedRouter>
-              <Filter setGender={setGender} setStock={setStock}/>
+              <Filter setGender={setGender} setStock={setStock} gender={gender} stock={stock}/>
               <ProductList gender={gender} stock={stock}/>
             </ProtectedRouter>
           }

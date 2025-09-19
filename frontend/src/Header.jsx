@@ -47,7 +47,6 @@ export default function Header() {
         <hr />
       </header>
        
-         <Filter/>
       </>
   ); 
 }
