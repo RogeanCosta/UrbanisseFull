@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  useLocation,
-} from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import Error from "./paginaErro.jsx";
 import ProductForm from "./ProductForm";
 import ProductList from "./ProductList";
@@ -17,7 +12,7 @@ import HeaderLogin from "./Components/Login/HeaderLogin.jsx";
 import ProtectedRouter from "./Components/Helper/ProtectedRouter.jsx";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Filter from "./filters.jsx";
+import Filter from "./Filters.jsx";
 import Perfil from "./Components/Perfil/Perfil.jsx";
 
 function AppRoutes() {
@@ -36,8 +31,13 @@ function AppRoutes() {
           path="/"
           element={
             <ProtectedRouter>
-              <Filter setGender={setGender} setStock={setStock} gender={gender} stock={stock}/>
-              <ProductList gender={gender} stock={stock}/>
+              <Filter
+                setGender={setGender}
+                setStock={setStock}
+                gender={gender}
+                stock={stock}
+              />
+              <ProductList gender={gender} stock={stock} />
             </ProtectedRouter>
           }
         />
@@ -45,7 +45,12 @@ function AppRoutes() {
           path="produtos/:categoria"
           element={
             <ProtectedRouter>
-              <ProductList gender={null} stock={null}/>
+              <ProductList
+                gender={null}
+                stock={null}
+                setGender={setGender}
+                setStock={setStock}
+              />
             </ProtectedRouter>
           }
         />
@@ -67,11 +72,14 @@ function AppRoutes() {
         />
         <Route path="/login/*" element={<Login />} />
         <Route path="*" element={<Error />} />
-        <Route path="perfil" element={
-         <ProtectedRouter>
-           <Perfil />
-         </ProtectedRouter>
-        } />
+        <Route
+          path="perfil"
+          element={
+            <ProtectedRouter>
+              <Perfil />
+            </ProtectedRouter>
+          }
+        />
       </Routes>
     </>
   );
@@ -82,11 +90,7 @@ function App() {
     <BrowserRouter>
       <UserStorage>
         <AppRoutes />
-        <ToastContainer
-          position="top-right"
-          autoClose={3000}
-          theme="dark"
-        />
+        <ToastContainer position="top-right" autoClose={3000} theme="dark" />
       </UserStorage>
     </BrowserRouter>
   );
