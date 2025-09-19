@@ -19,17 +19,13 @@ router.get('/produtos/gender/:gender', productsController.getProductsByGender);
 router.get('/produtos/:id', productsController.getProduct);
 
 // ROTAS DELETE
-router.delete('/produtos/:id', productsController.deleteProduct); // nome da função pode ser alterada depois.
+router.delete('/produtos/:id', productsController.deleteProduct);
 
 // ROTAS POST
-router.post(
-  '/produtos',
-  upload.single('file'),
-  productsController.createProduct,
-);
+router.post("/produtos", upload.single("file"), productsController.createProduct);
 
 // ROTAS PUT
-router.put('/produtos/:id', productsController.updateProduct);
+router.put("/produtos/:id", productsController.updateProduct);
 
 // exportação das rotas definidas
 module.exports = router;

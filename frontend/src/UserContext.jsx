@@ -41,6 +41,7 @@ export const UserStorage = ({ children }) => {
       setLoading(true);
 
       const response = await postUsuarios(newUser);
+      
       if (response.status === 201) {
         userLogin(newUser.email, newUser.password);
       }

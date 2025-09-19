@@ -5,8 +5,10 @@ import "./ProductList.css";
 import Pagination from "./Pagination";
 import {
   getAcessorios,
+  getCalcados,
   getCalcas,
   getCamisas,
+  getIntimas,
   getProdutos,
   getCalcados,
   getIntimos,

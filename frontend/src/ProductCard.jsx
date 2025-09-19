@@ -7,7 +7,6 @@ import BadgesGenero from './Badges/BadgesGenero';
 import BadgesCategoria from './Badges/BadgesCategoria';
 import { Link, useNavigate } from 'react-router-dom';
 import DeleteConfirmation from './DeleteConfirm';
-import { supabase } from './supabase';
 
 export default function ProductCard({
   name,

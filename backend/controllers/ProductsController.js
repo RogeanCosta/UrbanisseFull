@@ -14,12 +14,11 @@ const REGION = process.env.AWS_REGION;
 exports.getProducts = async (req, res) => {
   try {
     const product = await prisma.products.findMany();
- 
-    res.status(200).json(product);
 
-   } catch (error) {
+    res.status(200).json(product);
+  } catch (error) {
     res.status(500).json({ error: 'Erro ao buscar produtos' });
-   }
+  }
 };
 
 exports.getProduct = async (req, res) => {
@@ -46,42 +45,69 @@ exports.getProductsCamisa = async (req, res) => {
         category: "Camisas"
       }
     });
- 
-    res.status(200).json(product);
 
-   } catch (error) {
+    res.status(200).json(product);
+  } catch (error) {
     res.status(500).json({ error: 'Erro ao buscar produtos' });
-   }
+  }
 };
 
 exports.getProductsCalca = async (req, res) => {
   try {
     const product = await prisma.products.findMany({
-      where:{
-        category: 'Calças'
-      }
+      where: {
+        category: 'Calças',
+      },
     });
- 
-    res.status(200).json(product);
 
-   } catch (error) {
+    res.status(200).json(product);
+  } catch (error) {
     res.status(500).json({ error: 'Erro ao buscar produtos' });
-   }
+  }
 };
 
 exports.getProductsAcessorio = async (req, res) => {
   try {
     const product = await prisma.products.findMany({
-      where:{
-        category: 'Acessórios'
-      }
+      where: {
+        category: 'Acessórios',
+      },
     });
- 
-    res.status(200).json(product);
 
-   } catch (error) {
+    res.status(200).json(product);
+  } catch (error) {
     res.status(500).json({ error: 'Erro ao buscar produtos' });
-   }
+  }
+};
+
+exports.getProductsIntimas = async (req, res) => {
+  try {
+    const products = await prisma.products.findMany({
+      where: {
+        category: 'Intimo',
+      },
+    });
+
+    res.status(200).json(products);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Erro ao buscar produtos íntimas' });
+  }
+};
+
+exports.getProductsCalcados = async (req, res) => {
+  try {
+    const products = await prisma.products.findMany({
+      where: {
+        category: 'Calçados',
+      },
+    });
+
+    res.status(200).json(products);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Erro ao buscar produtos calçados' });
+  }
 };
 
 exports.getProductsByGender = async (req, res) => {
@@ -101,36 +127,6 @@ exports.getProductsByGender = async (req, res) => {
   }
 };
 
-exports.getProductsIntimas = async (req, res) => {
-  try {
-    const products = await prisma.products.findMany({
-      where: {
-        category: 'Íntimas'
-      }
-    });
-
-    res.status(200).json(products);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Erro ao buscar produtos íntimas' });
-  }
-};
-
-exports.getProductsCalcados = async (req, res) => {
-  try {
-    const products = await prisma.products.findMany({
-      where: {
-        category: 'Calçados'
-      }
-    });
-
-    res.status(200).json(products);
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: 'Erro ao buscar produtos calçados' });
-  }
-};
-
 exports.getProductsByStock = async (req, res) => {
   try {
     const { stock } = req.params;
@@ -141,7 +137,7 @@ exports.getProductsByStock = async (req, res) => {
     } else {
       condition = { not: 0 };        // estoque diferente de 0
     } 
-
+    
     const products = await prisma.products.findMany({
       where: {
         stock: condition
@@ -199,7 +195,6 @@ exports.createProduct = async (req, res) => {
 
     // URL pública
     const imageUrl = `https://${BUCKET_NAME}.s3.${REGION}.amazonaws.com/${s3Key}`;
-
     const newProduct = await prisma.products.create({
       data: {
         name,
@@ -229,7 +224,6 @@ exports.updateProduct = async (req, res) => {
 
   try {
     const { name, price, description, stock, category, gender, imageUrl, imagePath } = req.body;
-    
     const updatedProduct = await prisma.products.update({
       where: {
         id: parseInt(id),
@@ -242,8 +236,8 @@ exports.updateProduct = async (req, res) => {
         category,
         gender,
         imageUrl,
-        imagePath
-      }
+        imagePath,
+      },
     });
     res.status(200).json(updatedProduct);
   } catch (error) {

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:3000'; // Substitua pelo URL//  da sua API
+const API_URL = 'http://localhost:3000'; // Substitua pelo URL da sua API
 
 // Referente aos produtos
 export const getProdutos = async () => {
@@ -35,8 +35,8 @@ export const getCalcados = async () => {
   return response.data;
 };
 
-export const getIntimos = async () => {
-  const response = await axios.get(`${API_URL}/produtos/intimos`);
+export const getIntimas = async () => {
+  const response = await axios.get(`${API_URL}/produtos/intimas`);
   return response.data;
 };
 
