@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import './Header.css';
 import Button from './Components/Forms/Button';
 import { UserContext } from './UserContext';
+import Filter from './filters';
 
 export default function Header() {
   const { userLogout } = React.useContext(UserContext);
@@ -67,6 +68,7 @@ export default function Header() {
           </nav>
         </div>
       </header>
-    </>
-  );
+       
+      </>
+  ); 
 }
